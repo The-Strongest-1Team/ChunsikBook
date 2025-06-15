@@ -12,7 +12,7 @@ class MainViewController: UIViewController {
     private let dataService = DataService()
     private var mainView = MainView()
     
-    var series: Int = 0
+    var series: Int = 1
     
     override func loadView() {
         self.view = mainView
@@ -34,22 +34,20 @@ class MainViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.mainView.booktitleLabel.text = books[self.series].title
                     self.mainView.seriesButton.setTitle("\(self.series + 1)", for: .normal)
-                    let imageName = "harrypotter\(self.series + 1)"
-                    if let image = UIImage(named: imageName) {
-                        self.mainView.bookimageView.image = image
-                    } else {
-                        print("🚫 이미지 로딩 실패: \(imageName)")
-                    }
+                    self.mainView.bookimageView.image = UIImage(named: "harrypotter\(self.series + 1)")
                     self.mainView.titleLabel.text = books[self.series].title
                     self.mainView.authorLabel.text = books[self.series].author
                     self.mainView.releasedLabel.text = books[self.series].release_date
                     self.mainView.pageLabel.text = String(books[self.series].pages)
-                    
                 }
                 
             case .failure(let error):
                 print("❌ 에러 발생: \(error)")
-                
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: "Error", message: "데이터를 불러오지 못했습니다.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "확인", style: .default))
+                    self.present(alert, animated: true)
+                }
             }
         }
     }

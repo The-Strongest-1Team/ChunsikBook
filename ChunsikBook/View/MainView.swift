@@ -56,18 +56,20 @@ class MainView: UIView {
         seriesButton.titleLabel?.textAlignment = .center
         seriesButton.backgroundColor = .systemBlue
         seriesButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
-        seriesButton.layer.cornerRadius = 25
+        seriesButton.layer.cornerRadius = 20
         seriesButton.clipsToBounds = true
         
         bookinfoStackView.axis = .horizontal
-        bookinfoStackView.spacing = 10
+        bookinfoStackView.spacing = 16
         bookinfoStackView.alignment = .top
-        bookinfoStackView.distribution = .fill
+        bookinfoStackView.distribution = .equalCentering
 
-        bookimageView.contentMode = .scaleAspectFit
+        bookimageView.contentMode = .scaleAspectFill
         bookimageView.clipsToBounds = true
         
         infoStackView.axis = .vertical
+        infoStackView.spacing = 10
+        infoStackView.alignment = .leading
         
         titleLabel.font = .boldSystemFont(ofSize: 20)
         titleLabel.numberOfLines = 0 // 무제한 줄 설정
@@ -77,7 +79,7 @@ class MainView: UIView {
         authorStackView.spacing = 8
         
         authortitleLabel.text = "Author"
-        authortitleLabel.font = .boldSystemFont(ofSize: 14)
+        authortitleLabel.font = .boldSystemFont(ofSize: 16)
         authortitleLabel.textColor = .black
         authortitleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         authortitleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
@@ -151,34 +153,35 @@ class MainView: UIView {
         }
         
         seriesButton.snp.makeConstraints {
-            $0.width.height.equalTo(50)
+            $0.width.height.equalTo(40)
         }
         
         bookinfoStackView.snp.makeConstraints {
+            $0.centerX.equalTo(safeAreaLayoutGuide.snp.centerX)
             $0.leading.equalTo(safeAreaLayoutGuide.snp.leading).inset(5)
             $0.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).inset(5)
-            $0.top.equalTo(seriesStackView.snp.bottom).offset(10)
+            $0.top.equalTo(seriesStackView.snp.bottom).offset(20)
         }
         
         bookimageView.snp.makeConstraints {
             $0.width.equalTo(100)
-                .multipliedBy(1.5)
+            $0.height.equalTo(bookimageView.snp.width).multipliedBy(1.5)
         }
         
         titleLabel.snp.makeConstraints {
-            $0.leading.equalTo(bookimageView.snp.trailing).offset(5)
+            $0.leading.equalTo(bookimageView.snp.trailing).offset(20)
         }
         
         authorStackView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(5)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(10)
         }
         
         releasedStackView.snp.makeConstraints {
-            $0.top.equalTo(authorStackView.snp.bottom).offset(5)
+            $0.top.equalTo(authorStackView.snp.bottom).offset(10)
         }
         
         pageStackView.snp.makeConstraints{
-            $0.top.equalTo(releasedStackView.snp.bottom).offset(5)
+            $0.top.equalTo(releasedStackView.snp.bottom).offset(10)
         }
         
         
