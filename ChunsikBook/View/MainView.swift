@@ -9,9 +9,12 @@ import SnapKit
 
 class MainView: UIView {
     
+    var titleView = UIView()
     var booktitleLabel = UILabel()
     var seriesStackView = UIStackView()
     var seriesButton = UIButton()
+    
+    var infoView = UIView()
     var bookinfoStackView = UIStackView()
     var bookimageView = UIImageView()
     var infoStackView = UIStackView()
@@ -60,10 +63,9 @@ class MainView: UIView {
         seriesButton.clipsToBounds = true
         
         bookinfoStackView.axis = .horizontal
-        bookinfoStackView.spacing = 16
         bookinfoStackView.alignment = .top
         bookinfoStackView.distribution = .equalCentering
-
+        
         bookimageView.contentMode = .scaleAspectFill
         bookimageView.clipsToBounds = true
         
@@ -117,11 +119,14 @@ class MainView: UIView {
     }
     
     func addViewUI() {
-        addSubview(booktitleLabel)
-        addSubview(seriesStackView)
+        addSubview(titleView)
+        titleView.addSubview(booktitleLabel)
+        titleView.addSubview(seriesStackView)
         seriesStackView.addArrangedSubview(seriesButton)
         
-        addSubview(bookinfoStackView)
+        addSubview(infoView)
+        infoView.addSubview(bookinfoStackView)
+        
         bookinfoStackView.addArrangedSubview(bookimageView)
         bookinfoStackView.addArrangedSubview(infoStackView)
         
@@ -142,9 +147,14 @@ class MainView: UIView {
     
     
     func setConstaints() {
+        titleView.snp.makeConstraints {
+            $0.leading.trailing.equalTo(safeAreaLayoutGuide).inset(20)
+            $0.top.equalTo(safeAreaLayoutGuide).offset(10)
+        }
+        
         booktitleLabel.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(10)
+            $0.directionalEdges.equalToSuperview()
+            
         }
         
         seriesStackView.snp.makeConstraints {
@@ -156,11 +166,14 @@ class MainView: UIView {
             $0.width.height.equalTo(40)
         }
         
-        bookinfoStackView.snp.makeConstraints {
-            $0.centerX.equalTo(safeAreaLayoutGuide.snp.centerX)
-            $0.leading.equalTo(safeAreaLayoutGuide.snp.leading).inset(5)
-            $0.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).inset(5)
+        infoView.snp.makeConstraints {
+            $0.leading.trailing.equalTo(safeAreaLayoutGuide).inset(5)
             $0.top.equalTo(seriesStackView.snp.bottom).offset(20)
+        }
+        
+        bookinfoStackView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(15)
+            $0.top.bottom.equalToSuperview()
         }
         
         bookimageView.snp.makeConstraints {

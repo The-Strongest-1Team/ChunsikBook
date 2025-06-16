@@ -12,7 +12,7 @@ class MainViewController: UIViewController {
     private let dataService = DataService()
     private var mainView = MainView()
     
-    var series: Int = 1
+    var series: Int = 0
     
     override func loadView() {
         self.view = mainView
@@ -37,7 +37,7 @@ class MainViewController: UIViewController {
                     self.mainView.bookimageView.image = UIImage(named: "harrypotter\(self.series + 1)")
                     self.mainView.titleLabel.text = books[self.series].title
                     self.mainView.authorLabel.text = books[self.series].author
-                    self.mainView.releasedLabel.text = books[self.series].release_date
+                    self.mainView.releasedLabel.text = self.formatDate(books[self.series].release_date)
                     self.mainView.pageLabel.text = String(books[self.series].pages)
                 }
                 
@@ -52,10 +52,15 @@ class MainViewController: UIViewController {
         }
     }
     
-    
-    
-    
-    
-    
+    func formatDate(_ raw: String) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX") // 영문 월 표기 위해 추가
+        formatter.dateFormat = "yyyy-MM-dd"
+        if let date = formatter.date(from: raw) {
+            formatter.dateFormat = "MMM d, yyyy"
+            return formatter.string(from: date)
+        }
+        return raw
+    }
     
 }
