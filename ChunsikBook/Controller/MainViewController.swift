@@ -39,6 +39,9 @@ class MainViewController: UIViewController {
                     self.mainView.authorLabel.text = books[self.series].author
                     self.mainView.releasedLabel.text = self.formatDate(books[self.series].release_date)
                     self.mainView.pageLabel.text = String(books[self.series].pages)
+                    self.mainView.dedicationLabel.text = books[self.series].dedication
+                    self.mainView.summeryLabel.text = books[self.series].summary
+                    
                 }
                 
             case .failure(let error):

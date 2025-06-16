@@ -8,12 +8,13 @@ import UIKit
 import SnapKit
 
 class MainView: UIView {
-    
+    // MARK: 타이틀
     var titleView = UIView()
     var booktitleLabel = UILabel()
     var seriesStackView = UIStackView()
     var seriesButton = UIButton()
     
+    // MARK: 책 정보
     var infoView = UIView()
     var bookinfoStackView = UIStackView()
     var bookimageView = UIImageView()
@@ -29,6 +30,17 @@ class MainView: UIView {
     var pagetitleLabel = UILabel()
     var pageLabel = UILabel()
     
+    // MARK: Dedication
+    var dedicationView = UIView()
+    var dedicationStackView = UIStackView()
+    var dedicationtitleLabel = UILabel()
+    var dedicationLabel = UILabel()
+    
+    // MARK: Summary
+    var summeryView = UIView()
+    var summeryStackView = UIStackView()
+    var summerytitleLabel = UILabel()
+    var summeryLabel = UILabel()
     
     
     override init (frame: CGRect) {
@@ -45,10 +57,10 @@ class MainView: UIView {
     func configureUI() {
         backgroundColor = .white
         
+        // MARK: 타이틀
         booktitleLabel.textAlignment = .center
         booktitleLabel.font = .boldSystemFont(ofSize: 24)
-        booktitleLabel.numberOfLines = 0 // 무제한 줄 설정
-        booktitleLabel.lineBreakMode = .byWordWrapping // 단위 단위 줄바꿈
+        booktitleLabel.numberOfLines = 0
         
         seriesStackView.axis = .horizontal
         seriesStackView.spacing = 10
@@ -62,6 +74,7 @@ class MainView: UIView {
         seriesButton.layer.cornerRadius = 20
         seriesButton.clipsToBounds = true
         
+        // MARK: 책 정보
         bookinfoStackView.axis = .horizontal
         bookinfoStackView.alignment = .top
         bookinfoStackView.distribution = .equalCentering
@@ -74,8 +87,7 @@ class MainView: UIView {
         infoStackView.alignment = .leading
         
         titleLabel.font = .boldSystemFont(ofSize: 20)
-        titleLabel.numberOfLines = 0 // 무제한 줄 설정
-        titleLabel.lineBreakMode = .byWordWrapping // 단위 단위 줄바꿈
+        titleLabel.numberOfLines = 0
         
         authorStackView.axis = .horizontal
         authorStackView.spacing = 8
@@ -113,17 +125,46 @@ class MainView: UIView {
         pageLabel.font = .systemFont(ofSize: 14)
         pageLabel.textColor = .gray
         
+        // MARK: Dedication
+        
+        dedicationStackView.axis = .vertical
+        dedicationStackView.spacing = 8
+        dedicationStackView.alignment = .leading
+        
+        dedicationtitleLabel.text = "Dedication"
+        dedicationtitleLabel.font = .boldSystemFont(ofSize: 18)
+        dedicationLabel.textColor = .black
+        
+        dedicationLabel.font = .systemFont(ofSize: 14)
+        dedicationLabel.textColor = .darkGray
+        dedicationLabel.numberOfLines = 0
         
         
+        // MARK: Summary
+        summeryStackView.axis = .vertical
+        summeryStackView.spacing = 8
+        summeryStackView.alignment = .leading
+        
+        summerytitleLabel.text = "Summary"
+        summerytitleLabel.font = .boldSystemFont(ofSize: 18)
+        summerytitleLabel.textColor = .black
+        // TODO: Summery 글자 라인 수정 필요
+        summeryLabel.font = .systemFont(ofSize: 14)
+        summeryLabel.textColor = .darkGray
+        summeryLabel.numberOfLines = 0
+        
+
         
     }
     
     func addViewUI() {
+        // MARK: 타이틀
         addSubview(titleView)
         titleView.addSubview(booktitleLabel)
         titleView.addSubview(seriesStackView)
         seriesStackView.addArrangedSubview(seriesButton)
         
+        // MARK: 책 정보
         addSubview(infoView)
         infoView.addSubview(bookinfoStackView)
         
@@ -143,10 +184,26 @@ class MainView: UIView {
         
         pageStackView.addArrangedSubview(pagetitleLabel)
         pageStackView.addArrangedSubview(pageLabel)
+        
+        // MARK: Dedication
+        addSubview(dedicationView)
+        dedicationView.addSubview(dedicationStackView)
+        
+        dedicationStackView.addArrangedSubview(dedicationtitleLabel)
+        dedicationStackView.addArrangedSubview(dedicationLabel)
+        
+        // MARK: Summary
+        addSubview(summeryView)
+        summeryView.addSubview(summeryStackView)
+        
+        summeryStackView.addArrangedSubview(summerytitleLabel)
+        summeryStackView.addArrangedSubview(summeryLabel)
+        
     }
     
     
     func setConstaints() {
+        // MARK: 타이틀
         titleView.snp.makeConstraints {
             $0.leading.trailing.equalTo(safeAreaLayoutGuide).inset(20)
             $0.top.equalTo(safeAreaLayoutGuide).offset(10)
@@ -166,6 +223,7 @@ class MainView: UIView {
             $0.width.height.equalTo(40)
         }
         
+        // MARK: 책 정보
         infoView.snp.makeConstraints {
             $0.leading.trailing.equalTo(safeAreaLayoutGuide).inset(5)
             $0.top.equalTo(seriesStackView.snp.bottom).offset(20)
@@ -197,6 +255,27 @@ class MainView: UIView {
             $0.top.equalTo(releasedStackView.snp.bottom).offset(10)
         }
         
+        // MARK: Dedication
+        dedicationView.snp.makeConstraints {
+            $0.top.equalTo(infoView.snp.bottom).offset(24)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+        
+        dedicationStackView.snp.makeConstraints {
+            $0.directionalEdges.equalToSuperview()
+        }
+        
+        
+        // MARK: Summary
+        summeryView.snp.makeConstraints {
+            $0.top.equalTo(dedicationView.snp.bottom).offset(24)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+        
+        summeryStackView.snp.makeConstraints {
+            $0.directionalEdges.equalToSuperview()
+        }
         
     }
+    
 }
