@@ -29,6 +29,15 @@ class MainView: UIView {
     var pagetitleLabel = UILabel()
     var pageLabel = UILabel()
     
+    var dedicationView = UIView()
+    var dedicationStackView = UIStackView()
+    var dedicationtitleLabel = UILabel()
+    var dedicationLabel = UILabel()
+    
+    var summeryView = UIView()
+    var summeryStackView = UIStackView()
+    var summerytitleLabel = UILabel()
+    var summeryLabel = UILabel()
     
     
     override init (frame: CGRect) {
