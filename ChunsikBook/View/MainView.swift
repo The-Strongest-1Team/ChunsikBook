@@ -49,7 +49,7 @@ class MainView: UIView {
     // MARK: Chapters
     var chaptersView = UIView()
     var chaptersStackView = UIStackView()
-    
+    var chaptertitleLabel = UILabel()
     
     override init (frame: CGRect) {
         super.init(frame: frame)
@@ -197,6 +197,11 @@ class MainView: UIView {
         chaptersStackView.axis = .vertical
         chaptersStackView.spacing = 8
         chaptersStackView.alignment = .leading
+        
+        chaptertitleLabel.text = "Chapters"
+        chaptertitleLabel.font = .boldSystemFont(ofSize: 18)
+        chaptertitleLabel.textColor = .black
+        
     }
     
     // MARK: addView
@@ -212,7 +217,7 @@ class MainView: UIView {
         scrollView.addSubview(scrollContentStackView)
         
         // MARK: BookInfo
-        scrollContentStackView.addSubview(infoView)
+        scrollContentStackView.addArrangedSubview(infoView)
         infoView.addSubview(bookinfoStackView)
         
         bookinfoStackView.addArrangedSubview(bookimageView)
@@ -233,18 +238,24 @@ class MainView: UIView {
         pageStackView.addArrangedSubview(pageLabel)
         
         // MARK: Dedication
-        scrollContentStackView.addSubview(dedicationView)
+        scrollContentStackView.addArrangedSubview(dedicationView)
         dedicationView.addSubview(dedicationStackView)
         
         dedicationStackView.addArrangedSubview(dedicationtitleLabel)
         dedicationStackView.addArrangedSubview(dedicationLabel)
         
         // MARK: Summary
-        scrollContentStackView.addSubview(summeryView)
+        scrollContentStackView.addArrangedSubview(summeryView)
         summeryView.addSubview(summeryStackView)
         
         summeryStackView.addArrangedSubview(summerytitleLabel)
         summeryStackView.addArrangedSubview(summeryLabel)
+        
+        // MARK: Chapter
+        scrollContentStackView.addArrangedSubview(chaptersView)
+        chaptersView.addSubview(chaptersStackView)
+        
+        chaptersStackView.addArrangedSubview(chaptertitleLabel)
         
         
     }
@@ -284,7 +295,6 @@ class MainView: UIView {
         scrollContentStackView.snp.makeConstraints {
             $0.directionalEdges.equalToSuperview()
             $0.width.equalToSuperview()
-            $0.bottom.equalTo(summeryLabel.snp.bottom)
 
         }
     }
@@ -292,7 +302,7 @@ class MainView: UIView {
     // MARK: BookInfo
     func bookinfoConstaint() {
         infoView.snp.makeConstraints {
-            $0.top.equalTo(scrollContentStackView)
+            $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(5)
         }
         
@@ -327,12 +337,13 @@ class MainView: UIView {
     // MARK: Dedication
     func dedicatonConstaint() {
         dedicationView.snp.makeConstraints {
-            $0.top.equalTo(infoView.snp.bottom).offset(24)
+            $0.top.equalTo(infoView.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
         dedicationStackView.snp.makeConstraints {
-            $0.directionalEdges.equalToSuperview()
+            $0.top.equalToSuperview().inset(24)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
         
         
@@ -341,17 +352,27 @@ class MainView: UIView {
     // MARK: Summary
     func summaryConstaint() {
         summeryView.snp.makeConstraints {
-            $0.top.equalTo(dedicationView.snp.bottom).offset(24)
+            $0.top.equalTo(dedicationView.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
         summeryStackView.snp.makeConstraints {
-            $0.directionalEdges.equalToSuperview()
+            $0.top.equalToSuperview().inset(24)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
         
     }
     
     func chapterConstaint() {
+        chaptersView.snp.makeConstraints {
+            $0.top.equalTo(summeryView.snp.bottom)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+        
+        chaptersStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(24)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
         
     }
 }
