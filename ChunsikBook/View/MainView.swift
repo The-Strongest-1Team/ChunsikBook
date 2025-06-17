@@ -8,13 +8,15 @@ import UIKit
 import SnapKit
 
 class MainView: UIView {
-    // MARK: 타이틀
+    // MARK: Title
     var titleView = UIView()
     var booktitleLabel = UILabel()
     var seriesStackView = UIStackView()
     var seriesButton = UIButton()
     
-    // MARK: 책 정보
+    // MARK: ScrollView
+    
+    // MARK: BookInfo
     var infoView = UIView()
     var bookinfoStackView = UIStackView()
     var bookimageView = UIImageView()
@@ -42,25 +44,40 @@ class MainView: UIView {
     var summerytitleLabel = UILabel()
     var summeryLabel = UILabel()
     
+    // MARK: Chapters
+    var chaptersView = UIView()
+    var chaptersStackView = UIStackView()
+    
     
     override init (frame: CGRect) {
         super.init(frame: frame)
-        configureUI()
+        backgroundColor = .white
+        titleUI()
+        scrollUI()
+        bookinfoUI()
+        dedicationUI()
+        summaryUI()
+        chartUI()
         addViewUI()
-        setConstaints()
+        titleConstaint()
+        scrollConstaint()
+        bookinfoConstaint()
+        dedicatonConstaint()
+        summaryConstaint()
+        chapterConstaint()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureUI() {
-        backgroundColor = .white
+    func titleUI() {
         
-        // MARK: 타이틀
+        // MARK: Title
         booktitleLabel.textAlignment = .center
         booktitleLabel.font = .boldSystemFont(ofSize: 24)
         booktitleLabel.numberOfLines = 0
+        booktitleLabel.lineBreakMode = .byWordWrapping
         
         seriesStackView.axis = .horizontal
         seriesStackView.spacing = 10
@@ -74,7 +91,16 @@ class MainView: UIView {
         seriesButton.layer.cornerRadius = 20
         seriesButton.clipsToBounds = true
         
-        // MARK: 책 정보
+        
+    }
+    
+    func scrollUI() {
+        // MARK: ScrollView
+        
+    }
+    
+    func bookinfoUI() {
+        // MARK: BookInfo
         bookinfoStackView.axis = .horizontal
         bookinfoStackView.alignment = .top
         bookinfoStackView.distribution = .equalCentering
@@ -88,6 +114,7 @@ class MainView: UIView {
         
         titleLabel.font = .boldSystemFont(ofSize: 20)
         titleLabel.numberOfLines = 0
+        booktitleLabel.lineBreakMode = .byWordWrapping
         
         authorStackView.axis = .horizontal
         authorStackView.spacing = 8
@@ -97,7 +124,7 @@ class MainView: UIView {
         authortitleLabel.textColor = .black
         authortitleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         authortitleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-
+        
         authorLabel.font = .systemFont(ofSize: 18)
         authorLabel.textColor = .darkGray
         
@@ -109,7 +136,7 @@ class MainView: UIView {
         releasedtitleLabel.textColor = .black
         releasedtitleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         releasedtitleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-
+        
         releasedLabel.font = .systemFont(ofSize: 14)
         releasedLabel.textColor = .gray
         
@@ -121,10 +148,13 @@ class MainView: UIView {
         pagetitleLabel.textColor = .black
         pagetitleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         pagetitleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-
+        
         pageLabel.font = .systemFont(ofSize: 14)
         pageLabel.textColor = .gray
         
+    }
+    
+    func dedicationUI() {
         // MARK: Dedication
         
         dedicationStackView.axis = .vertical
@@ -138,8 +168,11 @@ class MainView: UIView {
         dedicationLabel.font = .systemFont(ofSize: 14)
         dedicationLabel.textColor = .darkGray
         dedicationLabel.numberOfLines = 0
+        dedicationLabel.lineBreakMode = .byWordWrapping
         
-        
+    }
+    
+    func summaryUI() {
         // MARK: Summary
         summeryStackView.axis = .vertical
         summeryStackView.spacing = 8
@@ -152,19 +185,28 @@ class MainView: UIView {
         summeryLabel.font = .systemFont(ofSize: 14)
         summeryLabel.textColor = .darkGray
         summeryLabel.numberOfLines = 0
-        
-
+        summeryLabel.lineBreakMode = .byWordWrapping
         
     }
     
+    func chartUI() {
+        // MARK: Chapters
+        chaptersStackView.axis = .vertical
+        chaptersStackView.spacing = 8
+        chaptersStackView.alignment = .leading
+    }
+    
     func addViewUI() {
-        // MARK: 타이틀
+        // MARK: Title
         addSubview(titleView)
         titleView.addSubview(booktitleLabel)
         titleView.addSubview(seriesStackView)
         seriesStackView.addArrangedSubview(seriesButton)
         
-        // MARK: 책 정보
+        // MARK: ScrollView
+        
+        
+        // MARK: BookInfo
         addSubview(infoView)
         infoView.addSubview(bookinfoStackView)
         
@@ -199,11 +241,11 @@ class MainView: UIView {
         summeryStackView.addArrangedSubview(summerytitleLabel)
         summeryStackView.addArrangedSubview(summeryLabel)
         
+        
     }
     
-    
-    func setConstaints() {
-        // MARK: 타이틀
+    func titleConstaint() {
+        // MARK: Title
         titleView.snp.makeConstraints {
             $0.leading.trailing.equalTo(safeAreaLayoutGuide).inset(20)
             $0.top.equalTo(safeAreaLayoutGuide).offset(10)
@@ -222,8 +264,15 @@ class MainView: UIView {
         seriesButton.snp.makeConstraints {
             $0.width.height.equalTo(40)
         }
+    }
+    
+    func scrollConstaint() {
+        // MARK: ScrollView
         
-        // MARK: 책 정보
+    }
+    
+    func bookinfoConstaint() {
+        // MARK: BookInfo
         infoView.snp.makeConstraints {
             $0.leading.trailing.equalTo(safeAreaLayoutGuide).inset(5)
             $0.top.equalTo(seriesStackView.snp.bottom).offset(20)
@@ -254,7 +303,9 @@ class MainView: UIView {
         pageStackView.snp.makeConstraints{
             $0.top.equalTo(releasedStackView.snp.bottom).offset(10)
         }
-        
+    }
+    
+    func dedicatonConstaint() {
         // MARK: Dedication
         dedicationView.snp.makeConstraints {
             $0.top.equalTo(infoView.snp.bottom).offset(24)
@@ -265,7 +316,9 @@ class MainView: UIView {
             $0.directionalEdges.equalToSuperview()
         }
         
-        
+    }
+    
+    func summaryConstaint() {
         // MARK: Summary
         summeryView.snp.makeConstraints {
             $0.top.equalTo(dedicationView.snp.bottom).offset(24)
@@ -275,7 +328,9 @@ class MainView: UIView {
         summeryStackView.snp.makeConstraints {
             $0.directionalEdges.equalToSuperview()
         }
-        
     }
     
+    func chapterConstaint() {
+        
+    }
 }

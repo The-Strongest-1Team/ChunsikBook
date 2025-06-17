@@ -42,6 +42,8 @@ class MainViewController: UIViewController {
                     self.mainView.dedicationLabel.text = books[self.series].dedication
                     self.mainView.summeryLabel.text = books[self.series].summary
                     
+                    
+                    
                 }
                 
             case .failure(let error):
