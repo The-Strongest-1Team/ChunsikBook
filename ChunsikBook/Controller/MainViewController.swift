@@ -42,6 +42,15 @@ class MainViewController: UIViewController {
                     self.mainView.dedicationLabel.text = books[self.series].dedication
                     self.mainView.summeryLabel.text = books[self.series].summary
                     
+                    for chapter in books[self.series].chapters {
+                        let chapterLabel = UILabel()
+                        chapterLabel.text = "\(chapter.title)"
+                        chapterLabel.font = .systemFont(ofSize: 14)
+                        chapterLabel.textColor = .darkGray
+                        chapterLabel.numberOfLines = 0
+                        self.mainView.chaptersStackView.addArrangedSubview(chapterLabel)
+                    }
+                    
                 }
                 
             case .failure(let error):
