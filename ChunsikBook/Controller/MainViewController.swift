@@ -12,7 +12,7 @@ class MainViewController: UIViewController {
     private let dataService = DataService()
     private var mainView = MainView()
     
-    var series: Int = 0
+    var series: Int = 1
     
     override func loadView() {
         self.view = mainView
@@ -74,5 +74,4 @@ class MainViewController: UIViewController {
         }
         return raw
     }
-    
 }

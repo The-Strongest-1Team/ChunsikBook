@@ -303,12 +303,12 @@ class MainView: UIView {
     func bookinfoConstaint() {
         infoView.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(5)
+            $0.leading.trailing.equalToSuperview().inset(20)
         }
         
         bookinfoStackView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(15)
+            $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
         
