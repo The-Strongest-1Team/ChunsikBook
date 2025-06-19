@@ -9,11 +9,13 @@ import SnapKit
 
 class MainView: UIView {
     
+    var onSeriesButtonTapped: ((Int) -> Void)? // 현재 페이지를 전달해줄 프로퍼티
+    
     // MARK: Title
     var titleView = UIView()
     var booktitleLabel = UILabel()
     var seriesStackView = UIStackView()
-    var seriesButton = UIButton()
+    
     
     // MARK: ScrollView
     var scrollView = UIScrollView()
@@ -88,13 +90,8 @@ class MainView: UIView {
         seriesStackView.alignment = .center
         seriesStackView.distribution = .equalSpacing
         
-        seriesButton.setTitleColor(.white, for: .normal)
-        seriesButton.titleLabel?.textAlignment = .center
-        seriesButton.backgroundColor = .systemBlue
-        seriesButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
-        seriesButton.layer.cornerRadius = 20
-        seriesButton.clipsToBounds = true
-    
+        
+        
     }
     
     // MARK: ScrollView
@@ -194,7 +191,6 @@ class MainView: UIView {
         summeryExpandButton.titleLabel?.font = .systemFont(ofSize: 14)
         summeryExpandButton.setContentHuggingPriority(.required, for: .vertical)
         summeryExpandButton.setContentCompressionResistancePriority(.required, for: .vertical)
-//        summeryExpandButton.addTarget(self, action: #selector(handleExpandSummery), for: .touchUpInside)
     }
     
     // MARK: Chapters
@@ -214,7 +210,7 @@ class MainView: UIView {
         addSubview(titleView)
         titleView.addSubview(booktitleLabel)
         titleView.addSubview(seriesStackView)
-        seriesStackView.addArrangedSubview(seriesButton)
+        
         
         // MARK: ScrollView
         addSubview(scrollView)
@@ -256,7 +252,7 @@ class MainView: UIView {
         summeryStackView.addArrangedSubview(summerytitleLabel)
         summeryStackView.addArrangedSubview(summeryLabel)
         summeryView.addSubview(summeryExpandButton)
-
+        
         // MARK: Chapter
         scrollContentView.addSubview(chaptersView)
         chaptersView.addSubview(chaptersStackView)
@@ -269,7 +265,7 @@ class MainView: UIView {
     func titleConstaint() {
         titleView.snp.makeConstraints {
             $0.top.leading.trailing.equalTo(safeAreaLayoutGuide)
-
+            
         }
         
         booktitleLabel.snp.makeConstraints {
@@ -284,9 +280,7 @@ class MainView: UIView {
             $0.bottom.equalToSuperview()
         }
         
-        seriesButton.snp.makeConstraints {
-            $0.width.height.equalTo(40)
-        }
+        
     }
     
     // MARK: ScrollView
@@ -300,7 +294,7 @@ class MainView: UIView {
         scrollContentView.snp.makeConstraints {
             $0.directionalEdges.equalToSuperview()
             $0.width.equalToSuperview()
-
+            
         }
     }
     
@@ -375,9 +369,32 @@ class MainView: UIView {
     }
     
     // MARK: Configure
-    func configure(with books: Book, series: Int, isExpanded: Bool, formattedDate: String) {
+    func configure(with books: Book, series: Int, isExpanded: Bool, formattedDate: String, seriesCount: Int) {
         booktitleLabel.text = books.title
-        seriesButton.setTitle("\(series + 1)", for: .normal)
+        
+        seriesStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        chaptersStackView.arrangedSubviews
+            .filter { $0 != chaptertitleLabel }
+            .forEach { $0.removeFromSuperview() }
+        
+        for i in 0..<seriesCount {
+            let seriesButton = UIButton()
+            seriesButton .setTitle("\(i + 1)", for: .normal)
+            seriesButton.setTitleColor(.white, for: .normal)
+            seriesButton.titleLabel?.textAlignment = .center
+            seriesButton.backgroundColor = .systemBlue
+            seriesButton.titleLabel?.font = .boldSystemFont(ofSize: 16)
+            seriesButton.layer.cornerRadius = 20
+            seriesButton.clipsToBounds = true
+            seriesButton.tag = i
+            
+            seriesButton.snp.makeConstraints {
+                $0.width.height.equalTo(40)
+            }
+            seriesStackView.addArrangedSubview(seriesButton)
+        }
+        
+        
         bookimageView.image = UIImage(named: "harrypotter\(series + 1)")
         titleLabel.text = books.title
         authorLabel.text = books.author
@@ -406,11 +423,11 @@ class MainView: UIView {
             chapterLabel.textColor = .darkGray
             chapterLabel.numberOfLines = 0
             chaptersStackView.addArrangedSubview(chapterLabel)
+            
         }
-        
     }
     
-
     
-
+    
+    
 }

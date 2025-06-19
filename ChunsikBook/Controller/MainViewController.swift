@@ -13,11 +13,12 @@ class MainViewController: UIViewController {
     private var mainView = MainView()
     var books: [Book] = []
     
-    var series: Int = 2
+    var series: Int = 0
     var isExpanded: Bool = true
     
     override func loadView() {
         self.view = mainView
+                
         mainView.summeryExpandButton.addTarget(self, action: #selector(handleExpandSummery), for: .touchUpInside)
     }
     
@@ -61,23 +62,36 @@ class MainViewController: UIViewController {
         }
         return raw
     }
-    
+
     @objc func handleExpandSummery() {
         isExpanded.toggle()
         updateUI()
     }
     
+    @objc private func handleSeriesTapped(_ sender: UIButton) {
+        self.series = sender.tag
+        self.updateUI()
+    }
     
+    func setupSeriesButtonActions() {
+        mainView.seriesStackView.arrangedSubviews.forEach { view in
+            guard let button = view as? UIButton else { return }
+            button.addTarget(self, action: #selector(handleSeriesTapped(_:)), for: .touchUpInside)
+        }
+    }
     
     func updateUI() {
         guard books.indices.contains(series) else { return }
         let books = books[series]
+        let seriesCount = self.books.count
         let formattedDate = self.formatDate(books.release_date)
         self.mainView.configure(
             with: books,
             series: series,
             isExpanded: isExpanded,
-            formattedDate: formattedDate
+            formattedDate: formattedDate,
+            seriesCount: seriesCount
         )
+        setupSeriesButtonActions()
     }
 }
