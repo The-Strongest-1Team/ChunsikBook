@@ -18,7 +18,7 @@ class MainViewController: UIViewController {
     
     override func loadView() {
         self.view = mainView
-                
+        
         mainView.summeryExpandButton.addTarget(self, action: #selector(handleExpandSummery), for: .touchUpInside)
     }
     
@@ -53,7 +53,7 @@ class MainViewController: UIViewController {
             }
         }
     }
-
+    
     func formatDate(_ raw: String) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX") // 영문 월 표기 위해 추가
@@ -64,7 +64,7 @@ class MainViewController: UIViewController {
         }
         return raw
     }
-
+    
     @objc func handleExpandSummery() {
         isExpanded.toggle()
         UserDefaults.standard.set(isExpanded, forKey: "isExpandedSummary")
@@ -81,6 +81,13 @@ class MainViewController: UIViewController {
         mainView.seriesStackView.arrangedSubviews.forEach { view in
             guard let button = view as? UIButton else { return }
             button.addTarget(self, action: #selector(handleSeriesTapped(_:)), for: .touchUpInside)
+            
+            let isSelected = (button.tag == series)
+            UIView.animate(withDuration: 0.2) {
+                button.backgroundColor = isSelected ? UIColor.systemBlue.withAlphaComponent(0.4) : .systemBlue
+            }
+            
+            
         }
     }
     
