@@ -24,6 +24,7 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        isExpanded = UserDefaults.standard.bool(forKey: "isExpandedSummary")
         loadBooks()
         updateUI()
     }
@@ -65,6 +66,7 @@ class MainViewController: UIViewController {
 
     @objc func handleExpandSummery() {
         isExpanded.toggle()
+        UserDefaults.standard.set(isExpanded, forKey: "isExpandedSummary")
         updateUI()
     }
     
