@@ -67,9 +67,11 @@ class MainViewController: UIViewController {
         updateUI()
     }
     
+    
+    
     func updateUI() {
         guard books.indices.contains(series) else { return }
-        var books = books[series]
+        let books = books[series]
         let formattedDate = self.formatDate(books.release_date)
         self.mainView.configure(
             with: books,
