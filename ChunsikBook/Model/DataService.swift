@@ -16,23 +16,20 @@ class DataService {
     }
     
     func loadBooks(completion: @escaping (Result<[Book], Error>) -> Void) {
-        guard let path = Bundle.main.path(forResource: "data", ofType: "json") else { 
+        guard let path = Bundle.main.path(forResource: "data", ofType: "json") else {
             completion(.failure(DataError.fileNotFound))
             return
         }
         
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: path)) // 파일위치
-            let bookResponse = try JSONDecoder().decode(BookResponse.self, from: data)
-            let books = bookResponse.data.map { $0.attributes }
+            let decoder = try JSONDecoder().decode(BookData.self, from: data)
+            let books = decoder.data.map { $0.attributes }
             completion(.success(books))
+            
         } catch {
             print("🚨 JSON 파싱 에러 : \(error)")
             completion(.failure(DataError.parsingFailed))
         }
     }
 }
-
-
-
-

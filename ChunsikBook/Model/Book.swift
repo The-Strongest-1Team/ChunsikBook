@@ -5,11 +5,11 @@
 //  Created by 이태윤 on 6/13/25.
 //
 
-struct BookResponse: Codable {
-    let data: [BookData]
+struct BookData: Codable {
+    let data: [Bookattributes]
 }
 
-struct BookData: Codable {
+struct Bookattributes: Codable {
     let attributes: Book
 }
 
@@ -21,10 +21,10 @@ struct Book: Codable {
     let dedication: String
     let summary: String
     let wiki: String
-    let chapters: [chapter]
+    let chapters: [Chapter]
 }
 
-struct chapter: Codable {
+struct Chapter: Codable {
     let title: String
 }
 

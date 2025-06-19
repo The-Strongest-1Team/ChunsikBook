@@ -11,16 +11,20 @@ class MainViewController: UIViewController {
     
     private let dataService = DataService()
     private var mainView = MainView()
+    var books: [Book] = []
     
-    var series: Int = 0
+    var series: Int = 2
+    var isExpanded: Bool = true
     
     override func loadView() {
         self.view = mainView
+        mainView.summeryExpandButton.addTarget(self, action: #selector(handleExpandSummery), for: .touchUpInside)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         loadBooks()
+        updateUI()
     }
     
     func loadBooks() {
@@ -32,25 +36,8 @@ class MainViewController: UIViewController {
                 // UI 변경은 반드시 메인 스레드에서 이루어져야 하므로,
                 // 혹시 모를 백그라운드 스레드 실행에 대비해 메인 스레드로 작업을 넘기는 코드
                 DispatchQueue.main.async {
-                    self.mainView.booktitleLabel.text = books[self.series].title
-                    self.mainView.seriesButton.setTitle("\(self.series + 1)", for: .normal)
-                    self.mainView.bookimageView.image = UIImage(named: "harrypotter\(self.series + 1)")
-                    self.mainView.titleLabel.text = books[self.series].title
-                    self.mainView.authorLabel.text = books[self.series].author
-                    self.mainView.releasedLabel.text = self.formatDate(books[self.series].release_date)
-                    self.mainView.pageLabel.text = String(books[self.series].pages)
-                    self.mainView.dedicationLabel.text = books[self.series].dedication
-                    self.mainView.summeryLabel.text = books[self.series].summary
-                    
-                    for chapter in books[self.series].chapters {
-                        let chapterLabel = UILabel()
-                        chapterLabel.text = "\(chapter.title)"
-                        chapterLabel.font = .systemFont(ofSize: 14)
-                        chapterLabel.textColor = .darkGray
-                        chapterLabel.numberOfLines = 0
-                        self.mainView.chaptersStackView.addArrangedSubview(chapterLabel)
-                    }
-                    
+                    self.books = books
+                    self.updateUI()
                 }
                 
             case .failure(let error):
@@ -63,7 +50,7 @@ class MainViewController: UIViewController {
             }
         }
     }
-    
+
     func formatDate(_ raw: String) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX") // 영문 월 표기 위해 추가
@@ -75,4 +62,22 @@ class MainViewController: UIViewController {
         return raw
     }
     
+    @objc func handleExpandSummery() {
+        isExpanded.toggle()
+        updateUI()
+    }
+    
+    
+    
+    func updateUI() {
+        guard books.indices.contains(series) else { return }
+        let books = books[series]
+        let formattedDate = self.formatDate(books.release_date)
+        self.mainView.configure(
+            with: books,
+            series: series,
+            isExpanded: isExpanded,
+            formattedDate: formattedDate
+        )
+    }
 }
