@@ -25,6 +25,7 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         isExpanded = UserDefaults.standard.bool(forKey: "isExpandedSummary")
+        series = UserDefaults.standard.integer(forKey: "series")
         loadBooks()
         updateUI()
     }
@@ -72,6 +73,7 @@ class MainViewController: UIViewController {
     
     @objc private func handleSeriesTapped(_ sender: UIButton) {
         self.series = sender.tag
+        UserDefaults.standard.set(series, forKey: "series")
         self.updateUI()
     }
     
