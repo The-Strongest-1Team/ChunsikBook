@@ -194,6 +194,7 @@ class MainView: UIView {
         summeryExpandButton.titleLabel?.font = .systemFont(ofSize: 14)
         summeryExpandButton.setContentHuggingPriority(.required, for: .vertical)
         summeryExpandButton.setContentCompressionResistancePriority(.required, for: .vertical)
+//        summeryExpandButton.addTarget(self, action: #selector(handleExpandSummery), for: .touchUpInside)
     }
     
     // MARK: Chapters
@@ -354,7 +355,7 @@ class MainView: UIView {
         summeryExpandButton.snp.makeConstraints {
             $0.top.equalTo(summeryStackView.snp.bottom)
             $0.trailing.bottom.equalToSuperview()
-            $0.width.height.equalTo(30)
+            $0.width.height.equalTo(40)
         }
     }
     
@@ -373,6 +374,7 @@ class MainView: UIView {
         
     }
     
+    // MARK: Configure
     func configure(with books: Book, series: Int, isExpanded: Bool, formattedDate: String) {
         booktitleLabel.text = books.title
         seriesButton.setTitle("\(series + 1)", for: .normal)
@@ -407,4 +409,8 @@ class MainView: UIView {
         }
         
     }
+    
+
+    
+
 }
