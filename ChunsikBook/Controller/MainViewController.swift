@@ -19,7 +19,6 @@ class MainViewController: UIViewController {
     override func loadView() {
         self.view = mainView
         
-        mainView.summeryExpandButton.addTarget(self, action: #selector(handleExpandSummery), for: .touchUpInside)
     }
     
     override func viewDidLoad() {
@@ -29,7 +28,7 @@ class MainViewController: UIViewController {
             isExpanded = saved
         }
         loadBooks()
-        updateUI()
+        
     }
     
     func loadBooks() {
@@ -46,6 +45,8 @@ class MainViewController: UIViewController {
                         self.isExpanded = Array(repeating: false, count: books.count)
                         UserDefaults.standard.set(self.isExpanded, forKey: "isExpandedSummary")
                     }
+                    self.mainView.summeryExpandButton.addTarget(self, action: #selector(self.handleExpandSummery), for: .touchUpInside)
+
                     self.updateUI()
                 }
                 
@@ -78,12 +79,12 @@ class MainViewController: UIViewController {
     }
     
     @objc private func handleSeriesTapped(_ sender: UIButton) {
-        self.series = sender.tag
+        series = sender.tag
         UserDefaults.standard.set(series, forKey: "series")
-        self.updateUI()
+        updateUI()
     }
     
-    func setupSeriesButtonActions() {
+    func seriesButtonActions() {
         mainView.seriesStackView.arrangedSubviews.forEach { view in
             guard let button = view as? UIButton else { return }
             button.addTarget(self, action: #selector(handleSeriesTapped(_:)), for: .touchUpInside)
@@ -107,6 +108,6 @@ class MainViewController: UIViewController {
             formattedDate: formattedDate,
             seriesCount: seriesCount
         )
-        setupSeriesButtonActions()
+        seriesButtonActions()
     }
 }
