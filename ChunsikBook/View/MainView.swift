@@ -9,8 +9,6 @@ import SnapKit
 
 class MainView: UIView {
     
-    var onSeriesButtonTapped: ((Int) -> Void)? // 현재 페이지를 전달해줄 프로퍼티
-    
     // MARK: Title
     var titleView = UIView()
     var booktitleLabel = UILabel()
@@ -287,13 +285,13 @@ class MainView: UIView {
     func scrollConstaint() {
         scrollView.snp.makeConstraints {
             $0.top.equalTo(titleView.snp.bottom).offset(20)
-            $0.leading.trailing.bottom.equalTo(safeAreaLayoutGuide)
-            
+            $0.leading.trailing.equalTo(safeAreaLayoutGuide)
+            $0.width.equalTo(scrollView.contentLayoutGuide)
+            $0.bottom.equalToSuperview()
         }
         
         scrollContentView.snp.makeConstraints {
-            $0.directionalEdges.equalToSuperview()
-            $0.width.equalToSuperview()
+            $0.directionalEdges.equalTo(scrollView.contentLayoutGuide)
             
         }
     }
@@ -413,7 +411,9 @@ class MainView: UIView {
             }
         }
         else {
+            summeryExpandButton.setTitle("", for: .normal)
             summeryLabel.text = books.summary
+
         }
         
         for chapter in books.chapters {

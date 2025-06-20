@@ -14,7 +14,7 @@ class MainViewController: UIViewController {
     var books: [Book] = []
     
     var series: Int = 0
-    var isExpanded: Bool = true
+    var isExpanded: [Bool] = []
     
     override func loadView() {
         self.view = mainView
@@ -24,8 +24,10 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        isExpanded = UserDefaults.standard.bool(forKey: "isExpandedSummary")
         series = UserDefaults.standard.integer(forKey: "series")
+        if let saved = UserDefaults.standard.array(forKey: "isExpandedSummary") as? [Bool] {
+            isExpanded = saved
+        }
         loadBooks()
         updateUI()
     }
@@ -40,6 +42,10 @@ class MainViewController: UIViewController {
                 // 혹시 모를 백그라운드 스레드 실행에 대비해 메인 스레드로 작업을 넘기는 코드
                 DispatchQueue.main.async {
                     self.books = books
+                    if self.isExpanded.count != books.count {
+                        self.isExpanded = Array(repeating: false, count: books.count)
+                        UserDefaults.standard.set(self.isExpanded, forKey: "isExpandedSummary")
+                    }
                     self.updateUI()
                 }
                 
@@ -66,7 +72,7 @@ class MainViewController: UIViewController {
     }
     
     @objc func handleExpandSummery() {
-        isExpanded.toggle()
+        isExpanded[series].toggle()
         UserDefaults.standard.set(isExpanded, forKey: "isExpandedSummary")
         updateUI()
     }
@@ -86,8 +92,6 @@ class MainViewController: UIViewController {
             UIView.animate(withDuration: 0.2) {
                 button.backgroundColor = isSelected ? UIColor.systemBlue.withAlphaComponent(0.4) : .systemBlue
             }
-            
-            
         }
     }
     
@@ -99,7 +103,7 @@ class MainViewController: UIViewController {
         self.mainView.configure(
             with: books,
             series: series,
-            isExpanded: isExpanded,
+            isExpanded: isExpanded[series],
             formattedDate: formattedDate,
             seriesCount: seriesCount
         )
