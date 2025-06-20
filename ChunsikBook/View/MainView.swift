@@ -262,13 +262,13 @@ class MainView: UIView {
     // MARK: Title
     func titleConstaint() {
         titleView.snp.makeConstraints {
-            $0.top.leading.trailing.equalTo(safeAreaLayoutGuide)
+            $0.top.leading.trailing.equalTo(safeAreaLayoutGuide).inset(20)
             
         }
         
         booktitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(10)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.leading.trailing.equalToSuperview()
             
         }
         
