@@ -361,7 +361,7 @@ class MainView: UIView {
             seriesButton.layer.cornerRadius = 20
             seriesButton.clipsToBounds = true
             seriesButton.tag = i
-            
+             
             seriesButton.snp.makeConstraints {
                 $0.width.height.equalTo(40)
             }
