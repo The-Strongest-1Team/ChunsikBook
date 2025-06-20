@@ -375,6 +375,20 @@ class MainView: UIView {
         pageLabel.text = String(books.pages)
         dedicationLabel.text = books.dedication
         
+        self.summeryconfigure(with: books, isExpanded: isExpanded)
+        
+        for chapter in books.chapters {
+            let chapterLabel = UILabel()
+            chapterLabel.text = "\(chapter.title)"
+            chapterLabel.font = .systemFont(ofSize: 14)
+            chapterLabel.textColor = .darkGray
+            chapterLabel.numberOfLines = 0
+            chaptersStackView.addArrangedSubview(chapterLabel)
+        }
+    }
+    
+    // MARK: ExpandSummeryConfigure
+    func summeryconfigure(with books: Book, isExpanded: Bool) {
         if books.summary.count > 450 {
             if isExpanded {
                 summeryExpandButton.setTitle("접기", for: .normal)
@@ -388,16 +402,7 @@ class MainView: UIView {
         else {
             summeryExpandButton.setTitle("", for: .normal)
             summeryLabel.text = books.summary
-
-        }
-        
-        for chapter in books.chapters {
-            let chapterLabel = UILabel()
-            chapterLabel.text = "\(chapter.title)"
-            chapterLabel.font = .systemFont(ofSize: 14)
-            chapterLabel.textColor = .darkGray
-            chapterLabel.numberOfLines = 0
-            chaptersStackView.addArrangedSubview(chapterLabel)
         }
     }
+
 }

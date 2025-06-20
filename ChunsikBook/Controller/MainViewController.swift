@@ -75,10 +75,10 @@ class MainViewController: UIViewController {
     @objc func handleExpandSummery() {
         isExpanded[series].toggle()
         UserDefaults.standard.set(isExpanded, forKey: "isExpandedSummary")
-        updateUI()
+        self.mainView.summeryconfigure(with: books[series], isExpanded: isExpanded[series])
     }
     
-    @objc func handleSeriesTapped(_ sender: UIButton) {
+    @objc func handleSeries(_ sender: UIButton) {
         series = sender.tag
         UserDefaults.standard.set(series, forKey: "series")
         updateUI()
@@ -87,7 +87,7 @@ class MainViewController: UIViewController {
     func seriesButtonActions() {
         mainView.seriesStackView.arrangedSubviews.forEach { view in
             guard let button = view as? UIButton else { return }
-            button.addTarget(self, action: #selector(handleSeriesTapped(_:)), for: .touchUpInside)
+            button.addTarget(self, action: #selector(handleSeries(_:)), for: .touchUpInside)
             
             let isSelected = (button.tag == series)
             UIView.animate(withDuration: 0.2) {
