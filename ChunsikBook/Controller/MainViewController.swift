@@ -13,18 +13,22 @@ class MainViewController: UIViewController {
     private var mainView = MainView()
     var books: [Book] = []
     
-    var series: Int = 2
-    var isExpanded: Bool = true
+    var series: Int = 0
+    var isExpanded: [Bool] = []
     
     override func loadView() {
         self.view = mainView
-        mainView.summeryExpandButton.addTarget(self, action: #selector(handleExpandSummery), for: .touchUpInside)
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        series = UserDefaults.standard.integer(forKey: "series")
+        if let saved = UserDefaults.standard.array(forKey: "isExpandedSummary") as? [Bool] {
+            isExpanded = saved
+        }
         loadBooks()
-        updateUI()
+        
     }
     
     func loadBooks() {
@@ -37,6 +41,12 @@ class MainViewController: UIViewController {
                 // 혹시 모를 백그라운드 스레드 실행에 대비해 메인 스레드로 작업을 넘기는 코드
                 DispatchQueue.main.async {
                     self.books = books
+                    if self.isExpanded.count != books.count {
+                        self.isExpanded = Array(repeating: false, count: books.count)
+                        UserDefaults.standard.set(self.isExpanded, forKey: "isExpandedSummary")
+                    }
+                    self.mainView.summeryExpandButton.addTarget(self, action: #selector(self.handleExpandSummery), for: .touchUpInside)
+
                     self.updateUI()
                 }
                 
@@ -50,7 +60,7 @@ class MainViewController: UIViewController {
             }
         }
     }
-
+    
     func formatDate(_ raw: String) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX") // 영문 월 표기 위해 추가
@@ -63,21 +73,41 @@ class MainViewController: UIViewController {
     }
     
     @objc func handleExpandSummery() {
-        isExpanded.toggle()
+        isExpanded[series].toggle()
+        UserDefaults.standard.set(isExpanded, forKey: "isExpandedSummary")
+        self.mainView.summeryconfigure(with: books[series], isExpanded: isExpanded[series])
+    }
+    
+    @objc func handleSeries(_ sender: UIButton) {
+        series = sender.tag
+        UserDefaults.standard.set(series, forKey: "series")
         updateUI()
     }
     
-    
+    func seriesButtonActions() {
+        mainView.seriesStackView.arrangedSubviews.forEach { view in
+            guard let button = view as? UIButton else { return }
+            button.addTarget(self, action: #selector(handleSeries(_:)), for: .touchUpInside)
+            
+            let isSelected = (button.tag == series)
+            UIView.animate(withDuration: 0.2) {
+                button.backgroundColor = isSelected ? UIColor.systemBlue.withAlphaComponent(0.4) : .systemBlue
+            }
+        }
+    }
     
     func updateUI() {
         guard books.indices.contains(series) else { return }
         let books = books[series]
+        let seriesCount = self.books.count
         let formattedDate = self.formatDate(books.release_date)
         self.mainView.configure(
             with: books,
             series: series,
-            isExpanded: isExpanded,
-            formattedDate: formattedDate
+            isExpanded: isExpanded[series],
+            formattedDate: formattedDate,
+            seriesCount: seriesCount
         )
+        seriesButtonActions()
     }
 }
