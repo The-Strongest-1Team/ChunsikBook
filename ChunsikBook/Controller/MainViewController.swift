@@ -72,7 +72,7 @@ class MainViewController: UIViewController {
         return raw
     }
     
-    @objc func handleExpandSummery() {
+    @objc private func handleExpandSummery() {
         isExpanded[series].toggle()
         UserDefaults.standard.set(isExpanded, forKey: "isExpandedSummary")
         updateUI()
@@ -84,7 +84,7 @@ class MainViewController: UIViewController {
         updateUI()
     }
     
-    func seriesButtonActions() {
+    private func seriesButtonActions() {
         mainView.seriesStackView.arrangedSubviews.forEach { view in
             guard let button = view as? UIButton else { return }
             button.addTarget(self, action: #selector(handleSeriesTapped(_:)), for: .touchUpInside)
@@ -96,7 +96,7 @@ class MainViewController: UIViewController {
         }
     }
     
-    func updateUI() {
+    private func updateUI() {
         guard books.indices.contains(series) else { return }
         let books = books[series]
         let seriesCount = self.books.count
