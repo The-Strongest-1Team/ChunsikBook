@@ -40,11 +40,11 @@ class MainView: UIView {
     var dedicationLabel = UILabel()
     
     // MARK: Summary
-    var summeryView = UIView()
-    var summeryStackView = UIStackView()
-    var summerytitleLabel = UILabel()
-    var summeryLabel = UILabel()
-    var summeryExpandButton = UIButton()
+    var summaryView = UIView()
+    var summaryStackView = UIStackView()
+    var summarytitleLabel = UILabel()
+    var summaryLabel = UILabel()
+    var summaryExpandButton = UIButton()
     
     // MARK: Chapters
     var chaptersView = UIView()
@@ -162,23 +162,23 @@ class MainView: UIView {
     
     // MARK: Summary
     func summaryUI() {
-        summeryStackView.axis = .vertical
-        summeryStackView.spacing = 8
+        summaryStackView.axis = .vertical
+        summaryStackView.spacing = 8
         
-        summerytitleLabel.text = "Summary"
-        summerytitleLabel.font = .boldSystemFont(ofSize: 18)
-        summerytitleLabel.textColor = .black
+        summarytitleLabel.text = "Summary"
+        summarytitleLabel.font = .boldSystemFont(ofSize: 18)
+        summarytitleLabel.textColor = .black
 
-        summeryLabel.font = .systemFont(ofSize: 14)
-        summeryLabel.textColor = .darkGray
-        summeryLabel.numberOfLines = 0
-        summeryLabel.lineBreakMode = .byTruncatingTail
+        summaryLabel.font = .systemFont(ofSize: 14)
+        summaryLabel.textColor = .darkGray
+        summaryLabel.numberOfLines = 0
+        summaryLabel.lineBreakMode = .byTruncatingTail
         
-        summeryExpandButton.backgroundColor = .clear
-        summeryExpandButton.setTitleColor(.systemBlue, for: .normal)
-        summeryExpandButton.titleLabel?.font = .systemFont(ofSize: 14)
-        summeryExpandButton.setContentHuggingPriority(.required, for: .vertical)
-        summeryExpandButton.setContentCompressionResistancePriority(.required, for: .vertical)
+        summaryExpandButton.backgroundColor = .clear
+        summaryExpandButton.setTitleColor(.systemBlue, for: .normal)
+        summaryExpandButton.titleLabel?.font = .systemFont(ofSize: 14)
+        summaryExpandButton.setContentHuggingPriority(.required, for: .vertical)
+        summaryExpandButton.setContentCompressionResistancePriority(.required, for: .vertical)
     }
     
     // MARK: Chapters
@@ -231,12 +231,12 @@ class MainView: UIView {
         dedicationStackView.addArrangedSubview(dedicationLabel)
         
         // MARK: Summary
-        scrollContentView.addSubview(summeryView)
-        summeryView.addSubview(summeryStackView)
+        scrollContentView.addSubview(summaryView)
+        summaryView.addSubview(summaryStackView)
         
-        summeryStackView.addArrangedSubview(summerytitleLabel)
-        summeryStackView.addArrangedSubview(summeryLabel)
-        summeryView.addSubview(summeryExpandButton)
+        summaryStackView.addArrangedSubview(summarytitleLabel)
+        summaryStackView.addArrangedSubview(summaryLabel)
+        summaryView.addSubview(summaryExpandButton)
         
         // MARK: Chapter
         scrollContentView.addSubview(chaptersView)
@@ -311,18 +311,18 @@ class MainView: UIView {
     
     // MARK: Summary
     func summaryConstaint() {
-        summeryView.snp.makeConstraints {
+        summaryView.snp.makeConstraints {
             $0.top.equalTo(dedicationView.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
-        summeryStackView.snp.makeConstraints {
+        summaryStackView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(24)
             $0.leading.trailing.equalToSuperview()
         }
         
-        summeryExpandButton.snp.makeConstraints {
-            $0.top.equalTo(summeryStackView.snp.bottom)
+        summaryExpandButton.snp.makeConstraints {
+            $0.top.equalTo(summaryStackView.snp.bottom)
             $0.trailing.bottom.equalToSuperview()
             $0.width.height.equalTo(40)
         }
@@ -331,7 +331,7 @@ class MainView: UIView {
     // MARK: Chapters
     func chapterConstaint() {
         chaptersView.snp.makeConstraints {
-            $0.top.equalTo(summeryView.snp.bottom)
+            $0.top.equalTo(summaryView.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
         }
@@ -391,17 +391,17 @@ class MainView: UIView {
     func summeryconfigure(with books: Book, isExpanded: Bool) {
         if books.summary.count > 450 {
             if isExpanded {
-                summeryExpandButton.setTitle("접기", for: .normal)
-                summeryLabel.text = books.summary
+                summaryExpandButton.setTitle("접기", for: .normal)
+                summaryLabel.text = books.summary
             }
             else {
-                summeryExpandButton.setTitle("더보기", for: .normal)
-                summeryLabel.text = books.summary.prefix(450) + "..."
+                summaryExpandButton.setTitle("더보기", for: .normal)
+                summaryLabel.text = books.summary.prefix(450) + "..."
             }
         }
         else {
-            summeryExpandButton.setTitle("", for: .normal)
-            summeryLabel.text = books.summary
+            summaryExpandButton.setTitle("", for: .normal)
+            summaryLabel.text = books.summary
         }
     }
 
