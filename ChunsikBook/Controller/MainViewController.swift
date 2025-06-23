@@ -104,7 +104,7 @@ class MainViewController: UIViewController {
         guard books.indices.contains(selectSeries) else { return }
         let book = books[selectSeries]
         let seriesCount = books.count
-        let formattedDate = self.formatDate(book.release_date)
+        let formattedDate = formatDate(book.release_date)
         mainView.configure(
             with: book,
             selectSeries: selectSeries,
