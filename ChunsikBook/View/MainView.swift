@@ -346,7 +346,7 @@ class MainView: UIView {
         pageLabel.text = String(book.pages)
         dedicationLabel.text = book.dedication
         showChapters(for: book.title)
-        self.summaryconfigure(with: book, isExpanded: isExpanded)
+        summaryconfigure(with: book, isExpanded: isExpanded)
         
     }
     

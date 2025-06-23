@@ -11,10 +11,10 @@ class MainViewController: UIViewController {
     
     private let dataService = DataService()
     private var mainView = MainView()
-    var books: [Book] = []
+    private var books: [Book] = []
     
-    var selectSeries: Int = 0
-    var isExpanded: [Bool] = []
+    private var selectSeries: Int = 0
+    private var isExpanded: [Bool] = []
     
     override func loadView() {
         self.view = mainView
