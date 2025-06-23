@@ -236,8 +236,8 @@ class MainView: UIView {
         chaptersStackView.addArrangedSubview(chaptertitleLabel)
     }
     
-    // MARK: Title
-    func titleConstaint() {
+    // MARK: TitleLayOut
+    private func titleConstaint() {
         titleView.snp.makeConstraints {
             $0.top.leading.trailing.equalTo(safeAreaLayoutGuide).inset(20)
         }
@@ -254,8 +254,8 @@ class MainView: UIView {
         }
     }
     
-    // MARK: ScrollView
-    func scrollConstaint() {
+    // MARK: ScrollViewLayOut
+    private func scrollConstaint() {
         scrollView.snp.makeConstraints {
             $0.top.equalTo(titleView.snp.bottom).offset(20)
             $0.leading.trailing.equalTo(safeAreaLayoutGuide)
@@ -268,8 +268,8 @@ class MainView: UIView {
         }
     }
     
-    // MARK: BookInfo
-    func bookinfoConstaint() {
+    // MARK: BookInfoLayOut
+    private func bookinfoConstaint() {
         infoView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(20)
@@ -287,8 +287,8 @@ class MainView: UIView {
         }
     }
     
-    // MARK: Dedication
-    func dedicatonConstaint() {
+    // MARK: DedicationLayOut
+    private func dedicatonConstaint() {
         dedicationView.snp.makeConstraints {
             $0.top.equalTo(infoView.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(20)
@@ -300,8 +300,8 @@ class MainView: UIView {
         }
     }
     
-    // MARK: Summary
-    func summaryConstaint() {
+    // MARK: SummaryLayOut
+    private func summaryConstaint() {
         summaryView.snp.makeConstraints {
             $0.top.equalTo(dedicationView.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(20)
@@ -319,8 +319,8 @@ class MainView: UIView {
         }
     }
     
-    // MARK: Chapters
-    func chapterConstaint() {
+    // MARK: ChaptersLayOut
+    private func chapterConstaint() {
         chaptersView.snp.makeConstraints {
             $0.top.equalTo(summaryView.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(20)
@@ -405,11 +405,10 @@ class MainView: UIView {
         }
     }
     
-    func showChapters(for selectedTitle: String) {
+    private func showChapters(for selectedTitle: String) {
         for (title, labelList) in chapterlistLabel {
             let show = (title == selectedTitle)
             labelList.forEach { $0.isHidden = !show }
         }
     }
-    
 }

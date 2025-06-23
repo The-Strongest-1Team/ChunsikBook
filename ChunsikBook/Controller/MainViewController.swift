@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Foundation
 
 class MainViewController: UIViewController {
     
@@ -60,32 +61,14 @@ class MainViewController: UIViewController {
         }
     }
     
-    func formatDate(_ raw: String) -> String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX") // 영문 월 표기 위해 추가
-        formatter.dateFormat = "yyyy-MM-dd"
-        if let date = formatter.date(from: raw) {
-            formatter.dateFormat = "MMM d, yyyy"
-            return formatter.string(from: date)
-        }
-        return raw
-    }
-    
-    @objc func handleExpandSummary() {
-        isExpanded[selectSeries].toggle()
-        UserDefaults.standard.set(isExpanded, forKey: "isExpandedSummary")
-        mainView.summaryconfigure(with: books[selectSeries], isExpanded: isExpanded[selectSeries])
-    }
-    
-    @objc func handleSeries(_ sender: UIButton) {
+    @objc private func handleSeries(_ sender: UIButton) {
         selectSeries = sender.tag
         UserDefaults.standard.set(selectSeries, forKey: "selectSeries")
         mainView.scrollView.setContentOffset(.zero, animated: true)
-        
         updateUI()
     }
     
-    func seriesButtonActions() {
+    private func seriesButtonActions() {
         mainView.seriesStackView.arrangedSubviews.forEach { view in
             guard let button = view as? UIButton else { return }
             button.addTarget(self, action: #selector(handleSeries(_:)), for: .touchUpInside)
@@ -97,12 +80,17 @@ class MainViewController: UIViewController {
         }
     }
     
+    @objc private func handleExpandSummary() {
+        isExpanded[selectSeries].toggle()
+        UserDefaults.standard.set(isExpanded, forKey: "isExpandedSummary")
+        mainView.summaryconfigure(with: books[selectSeries], isExpanded: isExpanded[selectSeries])
+    }
     
-    func updateUI() {
+    private func updateUI() {
         guard books.indices.contains(selectSeries) else { return }
         let book = books[selectSeries]
         let seriesCount = books.count
-        let formattedDate = formatDate(book.release_date)
+        let formattedDate = DateFormatter.MMMMdyyyy.string(from: book.releaseDate)
         mainView.configure(
             with: book,
             selectSeries: selectSeries,
