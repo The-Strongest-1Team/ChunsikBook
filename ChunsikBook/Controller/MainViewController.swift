@@ -32,9 +32,7 @@ class MainViewController: UIViewController {
     }
     
     func loadBooks() {
-        dataService.loadBooks { [weak self] result in
-            guard let self = self else { return }
-            
+        dataService.loadBooks { result in
             switch result {
             case .success(let books):
                 // UI 변경은 반드시 메인 스레드에서 이루어져야 하므로,

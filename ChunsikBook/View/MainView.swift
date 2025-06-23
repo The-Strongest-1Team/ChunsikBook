@@ -6,61 +6,169 @@
 //
 import UIKit
 import SnapKit
+import Then
 
 class MainView: UIView {
     // MARK: Title
     let titleView = UIView()
-    let booktitleLabel = UILabel()
-    let seriesStackView = UIStackView()
+    
+    let booktitleLabel = UILabel().then {
+        $0.textAlignment = .center
+        $0.font = .boldSystemFont(ofSize: 24)
+        $0.numberOfLines = 0
+    }
+    
+    let seriesStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.spacing = 10
+        $0.alignment = .center
+        $0.distribution = .equalSpacing
+    }
     
     // MARK: ScrollView
-    let scrollView = UIScrollView()
+    let scrollView = UIScrollView().then {
+        $0.showsVerticalScrollIndicator = false // 수직 스크롤바 설정.
+        $0.isScrollEnabled = true // 스크롤 활성화 설정 (false로 설정하면 스크롤이 비활성화됨 기본값은 true이므로 생략 가능)
+    }
+    
     let scrollContentView = UIView()
     
     // MARK: BookInfo
     let infoView = UIView()
-    let bookinfoStackView = UIStackView()
-    let bookimageView = UIImageView()
-    let infoStackView = UIStackView()
-    let titleLabel = UILabel()
-    let authorStackView = UIStackView()
-    let authortitleLabel = UILabel()
-    let authorLabel = UILabel()
-    let releasedStackView = UIStackView()
-    let releasedtitleLabel = UILabel()
-    let releasedLabel = UILabel()
-    let pageStackView = UIStackView()
-    let pagetitleLabel = UILabel()
-    let pageLabel = UILabel()
+    
+    let bookinfoStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.alignment = .top
+        $0.spacing = 10
+    }
+    
+    let bookimageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
+    }
+    
+    let infoStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 10
+    }
+    
+    let titleLabel = UILabel().then {
+        $0.font = .boldSystemFont(ofSize: 20)
+        $0.numberOfLines = 0
+    }
+    
+    let authorStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.spacing = 8
+    }
+    
+    let authortitleLabel = UILabel().then {
+        $0.text = "Author"
+        $0.font = .boldSystemFont(ofSize: 16)
+        $0.setContentHuggingPriority(.required, for: .horizontal)
+    }
+    
+    let authorLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 18)
+        $0.textColor = .darkGray
+    }
+    
+    let releasedStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.spacing = 8
+    }
+    
+    let releasedtitleLabel = UILabel().then {
+        $0.text = "Released"
+        $0.font = .boldSystemFont(ofSize: 14)
+        $0.setContentHuggingPriority(.required, for: .horizontal)
+    }
+    
+    let releasedLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 14)
+        $0.textColor = .gray
+    }
+    
+    let pageStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.spacing = 8
+    }
+    
+    let pagetitleLabel = UILabel().then {
+        $0.text = "Pages"
+        $0.font = .boldSystemFont(ofSize: 14)
+        $0.setContentHuggingPriority(.required, for: .horizontal)
+    }
+    
+    let pageLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 14)
+        $0.textColor = .gray
+    }
     
     // MARK: Dedication
     let dedicationView = UIView()
-    let dedicationStackView = UIStackView()
-    let dedicationtitleLabel = UILabel()
-    let dedicationLabel = UILabel()
+    
+    let dedicationStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 8
+    }
+    
+    let dedicationtitleLabel = UILabel().then {
+        $0.text = "Dedication"
+        $0.font = .boldSystemFont(ofSize: 18)
+    }
+    
+    let dedicationLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 14)
+        $0.textColor = .darkGray
+        $0.numberOfLines = 0
+    }
     
     // MARK: Summary
     let summaryView = UIView()
-    let summaryStackView = UIStackView()
-    let summarytitleLabel = UILabel()
-    let summaryLabel = UILabel()
-    let summaryExpandButton = UIButton()
+    
+    let summaryStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 8
+    }
+    
+    let summarytitleLabel = UILabel().then {
+        $0.text = "Summary"
+        $0.font = .boldSystemFont(ofSize: 18)
+    }
+    
+    let summaryLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 14)
+        $0.textColor = .darkGray
+        $0.numberOfLines = 0
+    }
+    
+    let summaryExpandButton = UIButton().then {
+        $0.backgroundColor = .clear
+        $0.setTitleColor(.systemBlue, for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 14)
+        $0.setContentHuggingPriority(.required, for: .vertical)
+        $0.setContentCompressionResistancePriority(.required, for: .vertical)
+    }
     
     // MARK: Chapters
     let chaptersView = UIView()
-    let chaptersStackView = UIStackView()
-    let chaptertitleLabel = UILabel()
+    
+    let chaptersStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 8
+    }
+    
+    let chaptertitleLabel = UILabel().then {
+        $0.text = "Chapters"
+        $0.font = .boldSystemFont(ofSize: 18)
+    }
+    
     var chapterlistLabel: [String: [UILabel]] = [:]
     
     override init (frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
-        titleUI()
-        scrollUI()
-        bookinfoUI()
-        dedicationUI()
-        summaryUI()
-        chaptertUI()
         addViewUI()
         titleConstaint()
         scrollConstaint()
@@ -72,117 +180,6 @@ class MainView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: Title
-    func titleUI() {
-        booktitleLabel.textAlignment = .center
-        booktitleLabel.font = .boldSystemFont(ofSize: 24)
-        booktitleLabel.numberOfLines = 0
-        booktitleLabel.lineBreakMode = .byWordWrapping
-        
-        seriesStackView.axis = .horizontal
-        seriesStackView.spacing = 10
-        seriesStackView.alignment = .center
-        seriesStackView.distribution = .equalSpacing
-    }
-    
-    // MARK: ScrollView
-    func scrollUI() {
-        scrollView.showsVerticalScrollIndicator = false // 수직 스크롤바 설정.
-        scrollView.isScrollEnabled = true // 스크롤 활성화 설정 (false로 설정하면 스크롤이 비활성화됨 기본값은 true이므로 생략 가능)
-    }
-    
-    // MARK: BookInfo
-    func bookinfoUI() {
-        bookinfoStackView.axis = .horizontal
-        bookinfoStackView.alignment = .top
-        bookinfoStackView.spacing = 10
-        
-        bookimageView.contentMode = .scaleAspectFill
-        bookimageView.clipsToBounds = true
-        
-        infoStackView.axis = .vertical
-        infoStackView.spacing = 10
-        
-        titleLabel.font = .boldSystemFont(ofSize: 20)
-        titleLabel.numberOfLines = 0
-        booktitleLabel.lineBreakMode = .byWordWrapping
-        
-        authorStackView.axis = .horizontal
-        authorStackView.spacing = 8
-        
-        authortitleLabel.text = "Author"
-        authortitleLabel.font = .boldSystemFont(ofSize: 16)
-        authortitleLabel.setContentHuggingPriority(.required, for: .horizontal)
-        
-        authorLabel.font = .systemFont(ofSize: 18)
-        authorLabel.textColor = .darkGray
-        
-        releasedStackView.axis = .horizontal
-        releasedStackView.spacing = 8
-        
-        releasedtitleLabel.text = "Released"
-        releasedtitleLabel.font = .boldSystemFont(ofSize: 14)
-        releasedtitleLabel.textColor = .black
-        releasedtitleLabel.setContentHuggingPriority(.required, for: .horizontal)
-        
-        releasedLabel.font = .systemFont(ofSize: 14)
-        releasedLabel.textColor = .gray
-        
-        pageStackView.axis = .horizontal
-        pageStackView.spacing = 8
-        
-        pagetitleLabel.text = "Pages"
-        pagetitleLabel.font = .boldSystemFont(ofSize: 14)
-        pagetitleLabel.textColor = .black
-        pagetitleLabel.setContentHuggingPriority(.required, for: .horizontal)
-        
-        pageLabel.font = .systemFont(ofSize: 14)
-        pageLabel.textColor = .gray
-    }
-    
-    // MARK: Dedication
-    func dedicationUI() {
-        dedicationStackView.axis = .vertical
-        dedicationStackView.spacing = 8
-        
-        dedicationtitleLabel.text = "Dedication"
-        dedicationtitleLabel.font = .boldSystemFont(ofSize: 18)
-        
-        dedicationLabel.font = .systemFont(ofSize: 14)
-        dedicationLabel.textColor = .darkGray
-        dedicationLabel.numberOfLines = 0
-        dedicationLabel.lineBreakMode = .byWordWrapping
-    }
-    
-    // MARK: Summary
-    func summaryUI() {
-        summaryStackView.axis = .vertical
-        summaryStackView.spacing = 8
-        
-        summarytitleLabel.text = "Summary"
-        summarytitleLabel.font = .boldSystemFont(ofSize: 18)
-        
-        summaryLabel.font = .systemFont(ofSize: 14)
-        summaryLabel.textColor = .darkGray
-        summaryLabel.numberOfLines = 0
-        summaryLabel.lineBreakMode = .byTruncatingTail
-        
-        summaryExpandButton.backgroundColor = .clear
-        summaryExpandButton.setTitleColor(.systemBlue, for: .normal)
-        summaryExpandButton.titleLabel?.font = .systemFont(ofSize: 14)
-        summaryExpandButton.setContentHuggingPriority(.required, for: .vertical)
-        summaryExpandButton.setContentCompressionResistancePriority(.required, for: .vertical)
-    }
-    
-    // MARK: Chapters
-    func chaptertUI() {
-        chaptersStackView.axis = .vertical
-        chaptersStackView.spacing = 8
-        
-        chaptertitleLabel.text = "Chapters"
-        chaptertitleLabel.font = .boldSystemFont(ofSize: 18)
     }
     
     // MARK: addView
