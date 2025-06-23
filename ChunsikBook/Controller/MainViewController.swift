@@ -17,7 +17,7 @@ class MainViewController: UIViewController {
     private var isExpanded: [Bool] = []
     
     override func loadView() {
-        self.view = mainView
+        view = mainView
         
     }
     
@@ -76,7 +76,7 @@ class MainViewController: UIViewController {
     @objc func handleExpandSummary() {
         isExpanded[selectSeries].toggle()
         UserDefaults.standard.set(isExpanded, forKey: "isExpandedSummary")
-        self.mainView.summaryconfigure(with: books[selectSeries], isExpanded: isExpanded[selectSeries])
+        mainView.summaryconfigure(with: books[selectSeries], isExpanded: isExpanded[selectSeries])
     }
     
     @objc func handleSeries(_ sender: UIButton) {
@@ -105,7 +105,7 @@ class MainViewController: UIViewController {
         let book = books[selectSeries]
         let seriesCount = books.count
         let formattedDate = self.formatDate(book.release_date)
-        self.mainView.configure(
+        mainView.configure(
             with: book,
             selectSeries: selectSeries,
             isExpanded: isExpanded[selectSeries],
