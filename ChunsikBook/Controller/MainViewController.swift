@@ -13,7 +13,7 @@ class MainViewController: UIViewController {
     private var mainView = MainView()
     var books: [Book] = []
     
-    var series: Int = 0
+    var selectSeries: Int = 0
     var isExpanded: [Bool] = []
     
     override func loadView() {
@@ -23,7 +23,7 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        series = UserDefaults.standard.integer(forKey: "series")
+        selectSeries = UserDefaults.standard.integer(forKey: "selectSeries")
         if let saved = UserDefaults.standard.array(forKey: "isExpandedSummary") as? [Bool] {
             isExpanded = saved
         }
@@ -41,12 +41,13 @@ class MainViewController: UIViewController {
                 // 혹시 모를 백그라운드 스레드 실행에 대비해 메인 스레드로 작업을 넘기는 코드
                 DispatchQueue.main.async {
                     self.books = books
-                    if self.isExpanded.count != books.count {
-                        self.isExpanded = Array(repeating: false, count: books.count)
-                        UserDefaults.standard.set(self.isExpanded, forKey: "isExpandedSummary")
-                    }
+                    self.isExpanded = Array(repeating: false, count: books.count)
+                    self.mainView.createSeriesButton(seriesCount: books.count)
+                    self.mainView.setChapterConfigure(with: books)
+                    
+                    UserDefaults.standard.set(self.isExpanded, forKey: "isExpandedSummary")
                     self.mainView.summaryExpandButton.addTarget(self, action: #selector(self.handleExpandSummary), for: .touchUpInside)
-
+                    
                     self.updateUI()
                 }
                 
@@ -73,15 +74,16 @@ class MainViewController: UIViewController {
     }
     
     @objc func handleExpandSummary() {
-        isExpanded[series].toggle()
+        isExpanded[selectSeries].toggle()
         UserDefaults.standard.set(isExpanded, forKey: "isExpandedSummary")
-        self.mainView.summaryconfigure(with: books[series], isExpanded: isExpanded[series])
+        self.mainView.summaryconfigure(with: books[selectSeries], isExpanded: isExpanded[selectSeries])
     }
     
     @objc func handleSeries(_ sender: UIButton) {
-        series = sender.tag
-        UserDefaults.standard.set(series, forKey: "series")
+        selectSeries = sender.tag
+        UserDefaults.standard.set(selectSeries, forKey: "selectSeries")
         mainView.scrollView.setContentOffset(.zero, animated: true)
+        
         updateUI()
     }
     
@@ -90,22 +92,23 @@ class MainViewController: UIViewController {
             guard let button = view as? UIButton else { return }
             button.addTarget(self, action: #selector(handleSeries(_:)), for: .touchUpInside)
             
-            let isSelected = (button.tag == series)
+            let isSelected = (button.tag == selectSeries)
             UIView.animate(withDuration: 0.2) {
                 button.backgroundColor = isSelected ? UIColor.systemBlue.withAlphaComponent(0.4) : .systemBlue
             }
         }
     }
     
+    
     func updateUI() {
-        guard books.indices.contains(series) else { return }
-        let books = books[series]
-        let seriesCount = self.books.count
-        let formattedDate = self.formatDate(books.release_date)
+        guard books.indices.contains(selectSeries) else { return }
+        let book = books[selectSeries]
+        let seriesCount = books.count
+        let formattedDate = self.formatDate(book.release_date)
         self.mainView.configure(
-            with: books,
-            series: series,
-            isExpanded: isExpanded[series],
+            with: book,
+            selectSeries: selectSeries,
+            isExpanded: isExpanded[selectSeries],
             formattedDate: formattedDate,
             seriesCount: seriesCount
         )

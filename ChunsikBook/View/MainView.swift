@@ -9,47 +9,48 @@ import SnapKit
 
 class MainView: UIView {
     // MARK: Title
-    var titleView = UIView()
-    var booktitleLabel = UILabel()
-    var seriesStackView = UIStackView()
+    let titleView = UIView()
+    let booktitleLabel = UILabel()
+    let seriesStackView = UIStackView()
     
     // MARK: ScrollView
-    var scrollView = UIScrollView()
-    var scrollContentView = UIView()
+    let scrollView = UIScrollView()
+    let scrollContentView = UIView()
     
     // MARK: BookInfo
-    var infoView = UIView()
-    var bookinfoStackView = UIStackView()
-    var bookimageView = UIImageView()
-    var infoStackView = UIStackView()
-    var titleLabel = UILabel()
-    var authorStackView = UIStackView()
-    var authortitleLabel = UILabel()
-    var authorLabel = UILabel()
-    var releasedStackView = UIStackView()
-    var releasedtitleLabel = UILabel()
-    var releasedLabel = UILabel()
-    var pageStackView = UIStackView()
-    var pagetitleLabel = UILabel()
-    var pageLabel = UILabel()
+    let infoView = UIView()
+    let bookinfoStackView = UIStackView()
+    let bookimageView = UIImageView()
+    let infoStackView = UIStackView()
+    let titleLabel = UILabel()
+    let authorStackView = UIStackView()
+    let authortitleLabel = UILabel()
+    let authorLabel = UILabel()
+    let releasedStackView = UIStackView()
+    let releasedtitleLabel = UILabel()
+    let releasedLabel = UILabel()
+    let pageStackView = UIStackView()
+    let pagetitleLabel = UILabel()
+    let pageLabel = UILabel()
     
     // MARK: Dedication
-    var dedicationView = UIView()
-    var dedicationStackView = UIStackView()
-    var dedicationtitleLabel = UILabel()
-    var dedicationLabel = UILabel()
+    let dedicationView = UIView()
+    let dedicationStackView = UIStackView()
+    let dedicationtitleLabel = UILabel()
+    let dedicationLabel = UILabel()
     
     // MARK: Summary
-    var summaryView = UIView()
-    var summaryStackView = UIStackView()
-    var summarytitleLabel = UILabel()
-    var summaryLabel = UILabel()
-    var summaryExpandButton = UIButton()
+    let summaryView = UIView()
+    let summaryStackView = UIStackView()
+    let summarytitleLabel = UILabel()
+    let summaryLabel = UILabel()
+    let summaryExpandButton = UIButton()
     
     // MARK: Chapters
-    var chaptersView = UIView()
-    var chaptersStackView = UIStackView()
-    var chaptertitleLabel = UILabel()
+    let chaptersView = UIView()
+    let chaptersStackView = UIStackView()
+    let chaptertitleLabel = UILabel()
+    var chapterlistLabel: [String: [UILabel]] = [:]
     
     override init (frame: CGRect) {
         super.init(frame: frame)
@@ -113,9 +114,7 @@ class MainView: UIView {
         
         authortitleLabel.text = "Author"
         authortitleLabel.font = .boldSystemFont(ofSize: 16)
-        authortitleLabel.textColor = .black
-        authortitleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        authortitleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        authortitleLabel.setContentHuggingPriority(.required, for: .horizontal)
         
         authorLabel.font = .systemFont(ofSize: 18)
         authorLabel.textColor = .darkGray
@@ -126,8 +125,7 @@ class MainView: UIView {
         releasedtitleLabel.text = "Released"
         releasedtitleLabel.font = .boldSystemFont(ofSize: 14)
         releasedtitleLabel.textColor = .black
-        releasedtitleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        releasedtitleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        releasedtitleLabel.setContentHuggingPriority(.required, for: .horizontal)
         
         releasedLabel.font = .systemFont(ofSize: 14)
         releasedLabel.textColor = .gray
@@ -138,8 +136,7 @@ class MainView: UIView {
         pagetitleLabel.text = "Pages"
         pagetitleLabel.font = .boldSystemFont(ofSize: 14)
         pagetitleLabel.textColor = .black
-        pagetitleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        pagetitleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        pagetitleLabel.setContentHuggingPriority(.required, for: .horizontal)
         
         pageLabel.font = .systemFont(ofSize: 14)
         pageLabel.textColor = .gray
@@ -152,7 +149,6 @@ class MainView: UIView {
         
         dedicationtitleLabel.text = "Dedication"
         dedicationtitleLabel.font = .boldSystemFont(ofSize: 18)
-        dedicationLabel.textColor = .black
         
         dedicationLabel.font = .systemFont(ofSize: 14)
         dedicationLabel.textColor = .darkGray
@@ -167,8 +163,7 @@ class MainView: UIView {
         
         summarytitleLabel.text = "Summary"
         summarytitleLabel.font = .boldSystemFont(ofSize: 18)
-        summarytitleLabel.textColor = .black
-
+        
         summaryLabel.font = .systemFont(ofSize: 14)
         summaryLabel.textColor = .darkGray
         summaryLabel.numberOfLines = 0
@@ -188,7 +183,6 @@ class MainView: UIView {
         
         chaptertitleLabel.text = "Chapters"
         chaptertitleLabel.font = .boldSystemFont(ofSize: 18)
-        chaptertitleLabel.textColor = .black
     }
     
     // MARK: addView
@@ -343,14 +337,21 @@ class MainView: UIView {
     }
     
     // MARK: Configure
-    func configure(with books: Book, series: Int, isExpanded: Bool, formattedDate: String, seriesCount: Int) {
-        booktitleLabel.text = books.title
+    func configure(with book: Book, selectSeries: Int, isExpanded: Bool, formattedDate: String, seriesCount: Int) {
+        booktitleLabel.text = book.title
+        bookimageView.image = UIImage(named: "harrypotter\(selectSeries + 1)")
+        titleLabel.text = book.title
+        authorLabel.text = book.author
+        releasedLabel.text = formattedDate
+        pageLabel.text = String(book.pages)
+        dedicationLabel.text = book.dedication
+        showChapters(for: book.title)
+        self.summaryconfigure(with: book, isExpanded: isExpanded)
         
-        seriesStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        chaptersStackView.arrangedSubviews
-            .filter { $0 != chaptertitleLabel }
-            .forEach { $0.removeFromSuperview() }
-        
+    }
+    
+    // MARK: CreateSeriesButton
+    func createSeriesButton(seriesCount: Int) {
         for i in 0..<seriesCount {
             let seriesButton = UIButton()
             seriesButton .setTitle("\(i + 1)", for: .normal)
@@ -361,48 +362,57 @@ class MainView: UIView {
             seriesButton.layer.cornerRadius = 20
             seriesButton.clipsToBounds = true
             seriesButton.tag = i
-             
+            
             seriesButton.snp.makeConstraints {
                 $0.width.height.equalTo(40)
             }
             seriesStackView.addArrangedSubview(seriesButton)
         }
-        
-        bookimageView.image = UIImage(named: "harrypotter\(series + 1)")
-        titleLabel.text = books.title
-        authorLabel.text = books.author
-        releasedLabel.text = formattedDate
-        pageLabel.text = String(books.pages)
-        dedicationLabel.text = books.dedication
-        
-        self.summaryconfigure(with: books, isExpanded: isExpanded)
-        
-        for chapter in books.chapters {
-            let chapterLabel = UILabel()
-            chapterLabel.text = "\(chapter.title)"
-            chapterLabel.font = .systemFont(ofSize: 14)
-            chapterLabel.textColor = .darkGray
-            chapterLabel.numberOfLines = 0
-            chaptersStackView.addArrangedSubview(chapterLabel)
-        }
     }
     
-    // MARK: ExpandSummeryConfigure
-    func summaryconfigure(with books: Book, isExpanded: Bool) {
-        if books.summary.count > 450 {
+    
+    // MARK: ExpandSummaryConfigure
+    func summaryconfigure(with book: Book, isExpanded: Bool) {
+        if book.summary.count > 450 {
             if isExpanded {
                 summaryExpandButton.setTitle("접기", for: .normal)
-                summaryLabel.text = books.summary
+                summaryLabel.text = book.summary
             }
             else {
                 summaryExpandButton.setTitle("더보기", for: .normal)
-                summaryLabel.text = books.summary.prefix(450) + "..."
+                summaryLabel.text = book.summary.prefix(450) + "..."
             }
         }
         else {
             summaryExpandButton.setTitle("", for: .normal)
-            summaryLabel.text = books.summary
+            summaryLabel.text = book.summary
         }
     }
-
+    
+    // MARK: SetChapterConfigure
+    func setChapterConfigure(with books: [Book]) {
+        for book in books {
+            var chapterlList: [UILabel] = []
+            for chapter in book.chapters {
+                let chapterLabel = UILabel()
+                chapterLabel.text = "\(chapter.title)"
+                chapterLabel.font = .systemFont(ofSize: 14)
+                chapterLabel.textColor = .darkGray
+                chapterLabel.numberOfLines = 0
+                chapterLabel.isHidden = true
+                chapterlList.append(chapterLabel)
+                
+                chaptersStackView.addArrangedSubview(chapterLabel)
+            }
+            chapterlistLabel[book.title] = chapterlList
+        }
+    }
+    
+    func showChapters(for selectedTitle: String) {
+        for (title, labelList) in chapterlistLabel {
+            let show = (title == selectedTitle)
+            labelList.forEach { $0.isHidden = !show }
+        }
+    }
+    
 }
