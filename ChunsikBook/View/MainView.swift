@@ -375,7 +375,7 @@ class MainView: UIView {
         pageLabel.text = String(books.pages)
         dedicationLabel.text = books.dedication
         
-        self.summeryconfigure(with: books, isExpanded: isExpanded)
+        self.summaryconfigure(with: books, isExpanded: isExpanded)
         
         for chapter in books.chapters {
             let chapterLabel = UILabel()
@@ -388,7 +388,7 @@ class MainView: UIView {
     }
     
     // MARK: ExpandSummeryConfigure
-    func summeryconfigure(with books: Book, isExpanded: Bool) {
+    func summaryconfigure(with books: Book, isExpanded: Bool) {
         if books.summary.count > 450 {
             if isExpanded {
                 summaryExpandButton.setTitle("접기", for: .normal)

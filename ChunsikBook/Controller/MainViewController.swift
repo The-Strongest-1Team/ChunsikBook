@@ -45,7 +45,7 @@ class MainViewController: UIViewController {
                         self.isExpanded = Array(repeating: false, count: books.count)
                         UserDefaults.standard.set(self.isExpanded, forKey: "isExpandedSummary")
                     }
-                    self.mainView.summeryExpandButton.addTarget(self, action: #selector(self.handleExpandSummery), for: .touchUpInside)
+                    self.mainView.summaryExpandButton.addTarget(self, action: #selector(self.handleExpandSummary), for: .touchUpInside)
 
                     self.updateUI()
                 }
@@ -72,15 +72,16 @@ class MainViewController: UIViewController {
         return raw
     }
     
-    @objc func handleExpandSummery() {
+    @objc func handleExpandSummary() {
         isExpanded[series].toggle()
         UserDefaults.standard.set(isExpanded, forKey: "isExpandedSummary")
-        self.mainView.summeryconfigure(with: books[series], isExpanded: isExpanded[series])
+        self.mainView.summaryconfigure(with: books[series], isExpanded: isExpanded[series])
     }
     
     @objc func handleSeries(_ sender: UIButton) {
         series = sender.tag
         UserDefaults.standard.set(series, forKey: "series")
+        mainView.scrollView.setContentOffset(.zero, animated: true)
         updateUI()
     }
     
