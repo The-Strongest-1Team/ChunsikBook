@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E7D7CFC62E09B5DC001516AF /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = E7D7CFC52E09B5DC001516AF /* Then */; };
 		E7F424C62DFC1AC600607794 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E7F424C52DFC1AC600607794 /* SnapKit */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7F424C62DFC1AC600607794 /* SnapKit in Frameworks */,
+				E7D7CFC62E09B5DC001516AF /* Then in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +86,7 @@
 			name = ChunsikBook;
 			packageProductDependencies = (
 				E7F424C52DFC1AC600607794 /* SnapKit */,
+				E7D7CFC52E09B5DC001516AF /* Then */,
 			);
 			productName = ChunsikBook;
 			productReference = E7FFF0582DF94626004D1974 /* ChunsikBook.app */;
@@ -115,6 +118,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				E7F424C42DFC1AC600607794 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				E7D7CFC42E09B5DC001516AF /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E7FFF0592DF94626004D1974 /* Products */;
@@ -352,6 +356,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E7D7CFC42E09B5DC001516AF /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		E7F424C42DFC1AC600607794 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -363,6 +375,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E7D7CFC52E09B5DC001516AF /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E7D7CFC42E09B5DC001516AF /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
 		E7F424C52DFC1AC600607794 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E7F424C42DFC1AC600607794 /* XCRemoteSwiftPackageReference "SnapKit" */;

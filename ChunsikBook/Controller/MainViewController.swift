@@ -6,37 +6,47 @@
 //
 
 import UIKit
+import Foundation
 
 class MainViewController: UIViewController {
     
     private let dataService = DataService()
     private var mainView = MainView()
-    var books: [Book] = []
+    private var books: [Book] = []
     
-    var series: Int = 2
-    var isExpanded: Bool = true
+    private var selectSeries: Int = 0
+    private var isExpanded: [Bool] = []
     
     override func loadView() {
-        self.view = mainView
-        mainView.summeryExpandButton.addTarget(self, action: #selector(handleExpandSummery), for: .touchUpInside)
+        view = mainView
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        selectSeries = UserDefaults.standard.integer(forKey: "selectSeries")
+        if let saved = UserDefaults.standard.array(forKey: "isExpandedSummary") as? [Bool] {
+            isExpanded = saved
+        }
         loadBooks()
-        updateUI()
+        
     }
     
     func loadBooks() {
-        dataService.loadBooks { [weak self] result in
-            guard let self = self else { return }
-            
+        dataService.loadBooks { result in
             switch result {
             case .success(let books):
                 // UI 변경은 반드시 메인 스레드에서 이루어져야 하므로,
                 // 혹시 모를 백그라운드 스레드 실행에 대비해 메인 스레드로 작업을 넘기는 코드
                 DispatchQueue.main.async {
                     self.books = books
+                    self.isExpanded = Array(repeating: false, count: books.count)
+                    self.mainView.createSeriesButton(seriesCount: books.count)
+                    self.mainView.setChapterConfigure(with: books)
+                    
+                    UserDefaults.standard.set(self.isExpanded, forKey: "isExpandedSummary")
+                    self.mainView.summaryExpandButton.addTarget(self, action: #selector(self.handleExpandSummary), for: .touchUpInside)
+                    
                     self.updateUI()
                 }
                 
@@ -50,34 +60,44 @@ class MainViewController: UIViewController {
             }
         }
     }
-
-    func formatDate(_ raw: String) -> String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX") // 영문 월 표기 위해 추가
-        formatter.dateFormat = "yyyy-MM-dd"
-        if let date = formatter.date(from: raw) {
-            formatter.dateFormat = "MMM d, yyyy"
-            return formatter.string(from: date)
-        }
-        return raw
-    }
     
-    @objc func handleExpandSummery() {
-        isExpanded.toggle()
+    @objc private func handleSeries(_ sender: UIButton) {
+        selectSeries = sender.tag
+        UserDefaults.standard.set(selectSeries, forKey: "selectSeries")
+        mainView.scrollView.setContentOffset(.zero, animated: true)
         updateUI()
     }
     
+    private func seriesButtonActions() {
+        mainView.seriesStackView.arrangedSubviews.forEach { view in
+            guard let button = view as? UIButton else { return }
+            button.addTarget(self, action: #selector(handleSeries(_:)), for: .touchUpInside)
+            
+            let isSelected = (button.tag == selectSeries)
+            UIView.animate(withDuration: 0.2) {
+                button.backgroundColor = isSelected ? UIColor.systemBlue.withAlphaComponent(0.4) : .systemBlue
+            }
+        }
+    }
     
+    @objc private func handleExpandSummary() {
+        isExpanded[selectSeries].toggle()
+        UserDefaults.standard.set(isExpanded, forKey: "isExpandedSummary")
+        mainView.summaryconfigure(with: books[selectSeries], isExpanded: isExpanded[selectSeries])
+    }
     
-    func updateUI() {
-        guard books.indices.contains(series) else { return }
-        let books = books[series]
-        let formattedDate = self.formatDate(books.release_date)
-        self.mainView.configure(
-            with: books,
-            series: series,
-            isExpanded: isExpanded,
-            formattedDate: formattedDate
+    private func updateUI() {
+        guard books.indices.contains(selectSeries) else { return }
+        let book = books[selectSeries]
+        let seriesCount = books.count
+        let formattedDate = DateFormatter.MMMMdyyyy.string(from: book.releaseDate)
+        mainView.configure(
+            with: book,
+            selectSeries: selectSeries,
+            isExpanded: isExpanded[selectSeries],
+            formattedDate: formattedDate,
+            seriesCount: seriesCount
         )
+        seriesButtonActions()
     }
 }
